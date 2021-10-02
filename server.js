@@ -16,6 +16,15 @@ app.use(express.static('public'));
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
+  // console.log(new Date().getTime().toString());
+  // let unix_time = 1633166161851;
+  // let tanggal = new Date(unix_time);
+  // console.log("ini tanggal: " + tanggal )
+  // let jam = tanggal.getHours();
+  // let menit = "0"+tanggal.getMinutes();
+  // let detik = "0"+tanggal .getSeconds();
+  // let formatJam = jam + ":"+menit.substr(-2)+":"+detik.substr(-2);
+  // console.log(formatJam);
 });
 
 
@@ -25,8 +34,38 @@ app.get("/api/hello", function (req, res) {
 });
 
 
-
+let PORT = 3000
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
+
+app.get('/api/', function (req, res) {  
+  let unix = new Date().getTime()
+  let utc = new Date().toUTCString();
+  res.json({
+    unix,
+    utc 
+  })
+})
+
+app.get('/api/:input', function (req, res) {
+  let input = req.params.input;
+  // console.log(typeof(epoch));
+  if(input.includes('-')){
+    unix = new Date(input).getTime();
+    utc = new Date(input).toUTCString();
+    res.json({
+      unix,
+      utc
+    })
+  } else {
+    input = parseInt(input);
+    unix = new Date(input).getTime();
+    utc = new Date(input).toUTCString();
+    res.json({
+      unix,
+      utc
+    })
+  }
+})
