@@ -40,40 +40,30 @@ var listener = app.listen(process.env.PORT||PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
 
+let tanggap = {}
+
 app.get('/api/', function (req, res) {  
-  let unix = new Date().getTime()
-  // console.log(typeof(unix));
-  let utc = new Date().toUTCString();
+  tanggap['unix'] = new Date().getTime()
+  // console.log(typeof(tanggap['unix']));
+  tanggap['utc'] = new Date().toUTCString();
   // console.log(typeof(utc));
-  res.json({
-    unix,
-    utc 
-  })
+  res.json(
+    tanggap
+  )
 })
 
 app.get('/api/:input', function (req, res) {
   let input = req.params.input;
   if(input.includes('-')){
-    if(input.length >= 11){
-      res.json({
-        error: new Date(input).toUTCString()
-      });
-    }else {
-      unix = new Date(input).getTime();
-      utc = new Date(input).toUTCString();
-      res.json({
-        unix,
-        hadeh: "error",
-        utc
-      });
-    };
+    tanggap['unix'] = new Date(input).getTime();
+    tanggap['utc'] = new Date(input).toUTCString();
   } else {
     input = parseInt(input);
-    unix = new Date(input).getTime();
-    utc = new Date(input).toUTCString();
-    res.json({
-      unix,
-      utc
-    })
+    tanggap['unix'] = new Date(input).getTime();
+    tanggap['utc'] = new Date(input).toUTCString();
   }
+  if (!tanggap['unix'] || !tanggap['utc']) {
+    res.json({error: "Invalid Date"});
+  }
+  res.json(tanggap)
 })
