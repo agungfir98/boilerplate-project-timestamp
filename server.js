@@ -42,7 +42,9 @@ var listener = app.listen(process.env.PORT||PORT, function () {
 
 app.get('/api/', function (req, res) {  
   let unix = new Date().getTime()
+  // console.log(typeof(unix));
   let utc = new Date().toUTCString();
+  // console.log(typeof(utc));
   res.json({
     unix,
     utc 
@@ -51,17 +53,23 @@ app.get('/api/', function (req, res) {
 
 app.get('/api/:input', function (req, res) {
   let input = req.params.input;
-  // console.log(typeof(epoch));
   if(input.includes('-')){
-    unix = new Date(input).getTime();
-    utc = new Date(input).toUTCString();
-    res.json({
-      unix,
-      utc
-    })
+    if(input.length >= 11){
+      res.json({
+        error: new Date(input).toUTCString()
+      });
+    }else {
+      unix = new Date(input).getTime();
+      utc = new Date(input).toUTCString();
+      res.json({
+        unix,
+        hadeh: "error",
+        utc
+      });
+    };
   } else {
-    // input = parseInt(input);
-    unix = new Date(parseInt(input)).getTime();
+    input = parseInt(input);
+    unix = new Date(input).getTime();
     utc = new Date(input).toUTCString();
     res.json({
       unix,
