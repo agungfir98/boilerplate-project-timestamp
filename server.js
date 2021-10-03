@@ -60,8 +60,8 @@ app.get('/api/:input', function (req, res) {
       utc
     })
   } else {
-    input = parseInt(input);
-    unix = new Date(input).getTime();
+    // input = parseInt(input);
+    unix = new Date(parseInt(input)).getTime();
     utc = new Date(input).toUTCString();
     res.json({
       unix,
