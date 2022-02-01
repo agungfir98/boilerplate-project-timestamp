@@ -54,7 +54,8 @@ app.get("/api/:input", function (req, res) {
     tanggap["unix"] = new Date(input).getTime();
     tanggap["utc"] = new Date(input).toUTCString();
   } else if (input.includes(" ")) {
-    input = new Date(input).getTime() + 24 * 60 * 60 * 1000;
+    // let parsed = Date.parse(input);
+    input = new Date(Date.parse(input)).getTime() + 24 * 60 * 60 * 1000;
     tanggap["unix"] = new Date(input).getTime();
     tanggap["utc"] = new Date(input).toUTCString();
   } else {
