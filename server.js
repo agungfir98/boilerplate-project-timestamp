@@ -48,23 +48,22 @@ app.get("/api/", function (req, res) {
   res.json(tanggap);
 });
 
-app.get("/api/:input", function (req, res) {
-  let input = req.params.input;
-  if (input.includes("-")) {
-    tanggap["unix"] = new Date(input).getTime();
-    tanggap["utc"] = new Date(input).toUTCString();
-  } else if (input.includes(" ")) {
-    // let parsed = Date.parse(input);
-    input = new Date(Date.parse(input)).getTime() + 24 * 60 * 60 * 1000;
-    tanggap["unix"] = new Date(input).getTime();
-    tanggap["utc"] = new Date(input).toUTCString();
+app.get("/api/:date_string", function (req, res) {
+  let date_string = req.params.date_string;
+
+  if (parseInt(date_string) > 10000) {
+    let unix = new Date(parseInt(date_string));
+    tanggap["unix"] = unix.getTime();
+    tanggap["utc"] = unix.toUTCString();
+  }
+  let tanggal = new Date(date_string);
+
+  if (tanggal == "Invalid Date") {
+    res.json("Invalid Date");
   } else {
-    input = parseInt(input);
-    tanggap["unix"] = new Date(input).getTime();
-    tanggap["utc"] = new Date(input).toUTCString();
+    tanggap["unix"] = tanggal.getTime();
+    tanggap["utc"] = tanggal.toUTCString();
   }
-  if (!tanggap["unix"] || !tanggap["utc"]) {
-    res.json({ error: "Invalid Date" });
-  }
+
   res.json(tanggap);
 });
