@@ -49,21 +49,22 @@ app.get("/api/", function (req, res) {
 });
 
 app.get("/api/:date_string", function (req, res) {
-  let date_string = req.params.date_string;
+  let { date_string } = req.params;
 
   if (parseInt(date_string) > 10000) {
     let unix = new Date(parseInt(date_string));
     tanggap["unix"] = unix.getTime();
     tanggap["utc"] = unix.toUTCString();
+    res.json(tanggap);
   }
   let tanggal = new Date(date_string);
 
   if (tanggal == "Invalid Date") {
-    res.json("Invalid Date");
+    res.json({ error: "Invalid Date" });
   } else {
     tanggap["unix"] = tanggal.getTime();
     tanggap["utc"] = tanggal.toUTCString();
+    tanggap["asu"] = "hehe";
+    res.json(tanggap);
   }
-
-  res.json(tanggap);
 });
