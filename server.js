@@ -2,20 +2,20 @@
 // where your node app starts
 
 // init project
-var express = require('express');
+var express = require("express");
 var app = express();
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC 
-var cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
+// so that your API is remotely testable by FCC
+var cors = require("cors");
+app.use(cors({ optionsSuccessStatus: 200 })); // some legacy browsers choke on 204
 
 // http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + '/views/index.html');
+  res.sendFile(__dirname + "/views/index.html");
   // console.log(new Date().getTime().toString());
   // let unix_time = 1633166161851;
   // let tanggal = new Date(unix_time);
@@ -27,43 +27,43 @@ app.get("/", function (req, res) {
   // console.log(formatJam);
 });
 
-
-// your first API endpoint... 
+// your first API endpoint...
 app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+  res.json({ greeting: "hello API" });
 });
 
-
-let PORT = 3000
+let PORT = 3000;
 // listen for requests :)
-var listener = app.listen(process.env.PORT||PORT, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
+var listener = app.listen(process.env.PORT || PORT, function () {
+  console.log("Your app is listening on port " + listener.address().port);
 });
 
-let tanggap = {}
+let tanggap = {};
 
-app.get('/api/', function (req, res) {  
-  tanggap['unix'] = new Date().getTime()
+app.get("/api/", function (req, res) {
+  tanggap["unix"] = new Date().getTime();
   // console.log(typeof(tanggap['unix']));
-  tanggap['utc'] = new Date().toUTCString();
+  tanggap["utc"] = new Date().toUTCString();
   // console.log(typeof(utc));
-  res.json(
-    tanggap
-  )
-})
+  res.json(tanggap);
+});
 
-app.get('/api/:input', function (req, res) {
+app.get("/api/:input", function (req, res) {
   let input = req.params.input;
-  if(input.includes('-')){
-    tanggap['unix'] = new Date(input).getTime();
-    tanggap['utc'] = new Date(input).toUTCString();
+  if (input.includes("-")) {
+    tanggap["unix"] = new Date(input).getTime();
+    tanggap["utc"] = new Date(input).toUTCString();
+  } else if (input.includes(" ")) {
+    input = new Date(input).getTime() + 24 * 60 * 60 * 1000;
+    tanggap["unix"] = new Date(input).getTime();
+    tanggap["utc"] = new Date(input).toUTCString();
   } else {
     input = parseInt(input);
-    tanggap['unix'] = new Date(input).getTime();
-    tanggap['utc'] = new Date(input).toUTCString();
+    tanggap["unix"] = new Date(input).getTime();
+    tanggap["utc"] = new Date(input).toUTCString();
   }
-  if (!tanggap['unix'] || !tanggap['utc']) {
-    res.json({error: "Invalid Date"});
+  if (!tanggap["unix"] || !tanggap["utc"]) {
+    res.json({ error: "Invalid Date" });
   }
-  res.json(tanggap)
-})
+  res.json(tanggap);
+});
